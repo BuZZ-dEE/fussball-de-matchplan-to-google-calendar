@@ -1,10 +1,14 @@
 {
-  "name": "fussball-de-matchplan-grabber",
+  "name": "fussball-de-matchplan-to-google-calendar",
   "version": "0.0.1",
-  "description": "A command-line tool for grabbing the team matchplan from fussball.de",
+  "description": "A command-line tool for grabbing the team matchplan from fussball.de and put it in a Google calendar.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:BuZZ-dEE/fussball-de-matchplan-to-google-calendar.git"
   },
   "keywords": [
     "football",
@@ -13,11 +17,16 @@
   "author": "Sebastian Schlatow <buzz-dee@riseup.net>",
   "license": "GPL-3.0",
   "bin": {
-    "fussball-de-matchplan-grabber": "./index.js"
+    "fussball-de-matchplan-to-google-calendar": "./index.js"
   },
   "dependencies": {
     "commander": "^2.9.0",
+    "fussball-de-matchplan-grabber": "^0.1.3",
+    "google-auth-library": "^0.10.0",
+    "googleapis": "^18.0.0",
     "jsdom": "^9.11.0",
+    "moment": "^2.17.1",
+    "node-timezone": "0.0.5",
     "node-yaml-config": "0.0.4"
   }
 }
