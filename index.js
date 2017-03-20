@@ -128,7 +128,7 @@ function listEvents(auth) {
     var calendar = google.calendar('v3');
     calendar.events.list({
         auth: auth,
-        calendarId: '4ag87iqhp7nr3u67ncriuvn0js@group.calendar.google.com', //'GVO4test',
+        calendarId: config.calendar.id,
         timeMin: (new Date()).toISOString(),
         maxResults: 10,
         singleEvents: true,
@@ -181,7 +181,7 @@ function insertEvent(auth, event) {
     var calendar = google.calendar('v3');
     calendar.events.insert({
         auth: auth,
-        calendarId: '4ag87iqhp7nr3u67ncriuvn0js@group.calendar.google.com', // GVO4test
+        calendarId: config.calendar.id,
         resource: event,
     }, function (err, event) {
         if (err) {
