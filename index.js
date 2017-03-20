@@ -152,6 +152,56 @@ function listEvents(auth) {
     });
 }
 
+/**
+ * Checks for already inserted event. If event already exists, it is updated.
+ * If there is no event, then the event is inserted. If the more then one event, 
+ * then the first one is updated and the other events will be deleted.
+ * 
+ * @param {google.auth.OAuth2} auth 
+ * @param {Object} googleCalendarEvent 
+ */
+function checkForExistingEvent(auth, googleCalendarEvent) {
+    var calendar = google.calendar('v3');
+    calendar.events.list({
+        auth: auth,
+        calendarId: config.calendar.id,
+        q: googleCalendarEvent.summary,
+        singleEvents: true,
+        orderBy: 'startTime',
+        timeMin: googleCalendarEvent.start.dateTime.toISOString(),
+        timeMax: googleCalendarEvent.end.dateTime.toISOString()
+    }, function (err, response) {
+        if (err) {
+            console.log('The API returned an error: ' + err);
+            return;
+        }
+        var events = response.items;
+        if (events.length == 0) {
+            console.log('No upcoming events found. Insert event: %s', googleCalendarEvent);
+            insertEvent(auth, googleCalendarEvent);
+        } else {
+            console.log('Found events:');
+            for (var i = 0; i < events.length; i++) {
+                var event = events[i];
+                var start = event.start.dateTime || event.start.date;
+                console.log('%s - %s', start, event.summary);
+                if (i === 0) {
+                    updateEvent(auth, googleCalendarEvent, event.id);
+                } else {
+                    deleteEvent(auth, event.id);
+                }
+
+                
+            }
+        }
+    });
+}
+
+/**
+ * Inserts all events from the match plan to the Google calendar.
+ * 
+ * @param {google.auth.OAuth2} auth 
+ */
 function insertEvents(auth) {
     matchPlan.forEach(function (value, index, array) {
         var googleCalendarEvent = {
@@ -167,12 +217,13 @@ function insertEvents(auth) {
                 'timeZone': getTimezone(),
             },
         };
-        insertEvent(auth, googleCalendarEvent);
+        //insertEvent(auth, googleCalendarEvent);
+        checkForExistingEvent(auth, googleCalendarEvent);
     });
 }
 
 /**
- * Lists the next 10 events on the user's primary calendar.
+ * Inserts an event.
  *
  * @param {google.auth.OAuth2} auth An authorized OAuth2 client.
  * @param {Object} event A Google calendar event.
@@ -188,6 +239,51 @@ function insertEvent(auth, event) {
             console.log('There was an error contacting the Calendar service: ' + err);
             return;
         }
-        console.log('Event created: %s', event.htmlLink);
+        console.log('Event %s created: %s', event.id, event.htmlLink);
+    });
+}
+
+/**
+ * Updates an event.
+ *
+ * @param {google.auth.OAuth2} auth An authorized OAuth2 client.
+ * @param {Object} event A Google calendar event.
+ * @param {String} id The id of the event in the Google calendar.
+ */
+function updateEvent(auth, event, id) {
+    var calendar = google.calendar('v3');
+    calendar.events.update({
+        auth: auth,
+        calendarId: config.calendar.id,
+        eventId: id,
+        resource: event
+    }, function (err, event) {
+        if (err) {
+            console.log('There was an error contacting the Calendar service: ' + err);
+            return;
+        }
+        console.log('Event %s updated: %s', event.id, event.htmlLink);
+    });
+}
+
+/**
+ * Deletes an event.
+ *
+ * @param {google.auth.OAuth2} auth An authorized OAuth2 client.
+ * @param {Object} event A Google calendar event.
+ * @param {String} id The id of the event in the Google calendar.
+ */
+function deleteEvent(auth, id) {
+    var calendar = google.calendar('v3');
+    calendar.events.delete({
+        auth: auth,
+        calendarId: config.calendar.id,
+        eventId: id
+    }, function (err) {
+        if (err) {
+            console.log('There was an error contacting the Calendar service: ' + err);
+            return;
+        }
+        console.log('Event %s deleted.', id);
     });
 }
