@@ -9,6 +9,9 @@ A match plan grabber for [fussball.de][0]
     cd fussball-de-matchplan-to-google-calendar
     sudo npm install -g
 
+## NodeJS / NPM
+    npm install -g fussball-de-matchplan-to-google-calendar
+
 # Usage
     fussball-de-matchplan-to-google-calendar --team URL_TO_TEAM_NEXT_GAMES
 
