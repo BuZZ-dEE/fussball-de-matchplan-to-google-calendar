@@ -6,7 +6,7 @@ A match plan grabber for [fussball.de][0]
 ## Register application for Google calendar API
 
 Go to [Google developer console][1], create a project to activate the calendar API. As platform choose webserver (node.js)
-to access user data. Then create the client id. In the next step choose a product name to generate the client id etc. Then download the file in JSON format and store it in the application folder.
+to access user data. Then create the client id. In the next step choose a product name to generate the client id etc. Then download the file in JSON format and store as `client_secret.json` it in the application folder.
 
 # Installation
 
