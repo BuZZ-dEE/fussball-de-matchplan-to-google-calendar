@@ -205,15 +205,15 @@ function checkForExistingEvent(auth, googleCalendarEvent) {
 function insertEvents(auth) {
     matchPlan.forEach(function (value, index, array) {
         var googleCalendarEvent = {
-            'summary': 'Spiel: ' + value.getHomeTeam() + ' vs ' + value.getVisitingTeam(),
+            'summary': 'Spiel: ' + value.getEncounter().toString(),
             'location': value.getLocation(),
-            'description': value.getDescription(),
+            'description': value.getDescription() != null ? value.getDescription() + '\n\n' : '' + value.getURL() != null ? value.getURL() : '',
             'start': {
-                'dateTime': value.getDate(),
+                'dateTime': new moment(value.getDate()).subtract(1, 'h').toDate(),
                 'timeZone': getTimezone(),
             },
             'end': {
-                'dateTime': new moment(value.getDate()).add(4, 'h').toDate(),
+                'dateTime': new moment(value.getDate()).add(3, 'h').toDate(),
                 'timeZone': getTimezone(),
             },
         };
