@@ -1,6 +1,6 @@
 {
   "name": "fussball-de-matchplan-to-google-calendar",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "A command-line tool for grabbing the team matchplan from fussball.de and put it in a Google calendar.",
   "main": "index.js",
   "scripts": {
