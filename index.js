@@ -209,11 +209,11 @@ function insertEvents(auth) {
             'location': value.getLocation(),
             'description': value.getDescription() != null ? value.getDescription() + '\n\n' : '' + value.getURL() != null ? value.getURL() : '',
             'start': {
-                'dateTime': new moment(value.getDate()).subtract(1, 'h').toDate(),
+                'dateTime': new moment(value.getDate()).subtract(config.gathering.kickoff.before, 'h').toDate(),
                 'timeZone': getTimezone(),
             },
             'end': {
-                'dateTime': new moment(value.getDate()).add(3, 'h').toDate(),
+                'dateTime': new moment(value.getDate()).add(config.gathering.kickoff.after, 'h').toDate(),
                 'timeZone': getTimezone(),
             },
         };
